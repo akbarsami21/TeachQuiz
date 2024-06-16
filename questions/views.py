@@ -20,6 +20,8 @@ def take_quiz(request, id):
 
 @login_required(login_url='/login')
 def api_quesiton(request, id):
+    if not request.user.is_superuser:
+        return redirect('/')
     raw_question = Question.objects.filter(course=id)[:20]
     questionset = []
     for q in raw_question:
@@ -41,14 +43,11 @@ def api_quesiton(request, id):
 @login_required(login_url='/login')
 def view_score(request):
     user = request.user
-
-    # Subquery to get the latest score for each course
     latest_scores_subquery = ScoreBoard.objects.filter(
         user=user,
         course=OuterRef('course')
     ).order_by('-id')
 
-    # Query to get the highest score and latest score for each course
     scores = ScoreBoard.objects.filter(user=user).values(
         'course__name'
     ).annotate(
