@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    .bg {
+        min-height: 100vh;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        position: relative;
+    }
+
+    .navbar {
+        z-index: 1030; 
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-title {
+        font-size: 1.75rem;
+        color: #212529;
+    }
+    
+    .form-group label {
+        font-weight: 500;
+        color: #495057;
+    }
+    
+    .form-control {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
+    }
+
+    .btn-login {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+        width: 100%;
+    }
+    
+    .btn-login:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
+
+    @media (max-width: 576px) {
+        .card {
+            margin: 1rem;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+    }
+{% endblock style %}
+
+{% block title %}Login{% endblock title %}
+{% block content %}
+<div class="container-fluid bg d-flex align-items-center justify-content-center min-vh-100">
+    <div class="row justify-content-center w-100">
+        <div class="col-lg-4 col-md-6 col-sm-8">
+            <div class="card shadow-lg">
+                <div class="card-body p-4 p-md-5">
+                    <h3 class="card-title text-center mb-4">Login</h3>
+                    
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-dark" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-login mt-4">Login</button>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <p>Don't have an account? <a href="{% url 'register' %}">Signup</a></p>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
